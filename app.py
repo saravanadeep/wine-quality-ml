@@ -136,6 +136,7 @@ with st.form("wine_prediction_form"):
     )
 
 
+
 # --------------------------------------------------
 # 5. Prediction
 # --------------------------------------------------
@@ -158,44 +159,92 @@ if submitted:
     }])
 
     try:
-        classification_prediction = classifier.predict(
-            input_data
-        )[0]
+        # Independent predictions from both models
+        classification_prediction = int(
+            classifier.predict(input_data)[0]
+        )
 
-        regression_prediction = regressor.predict(
-            input_data
-        )[0]
+        regression_prediction = float(
+            regressor.predict(input_data)[0]
+        )
 
         st.divider()
-        st.subheader("Prediction Results")
+        st.header("Prediction Results")
 
-        result1, result2 = st.columns(2)
+        # ------------------------------------------
+        # A. Regression result
+        # ------------------------------------------
 
-        with result1:
-            st.metric(
-                "Predicted Quality Score",
-                f"{regression_prediction:.2f} / 10"
+        st.subheader("1. Regression Prediction")
+
+        st.metric(
+            label="Predicted Wine Quality Score",
+            value=f"{regression_prediction:.2f} / 10"
+        )
+
+        st.caption(
+            "The regression model predicts a continuous "
+            "wine quality score."
+        )
+
+        # ------------------------------------------
+        # B. Classification result
+        # ------------------------------------------
+
+        st.subheader("2. Classification Prediction")
+
+        if classification_prediction == 1:
+            st.success(
+                "Predicted Class: Good Quality (Quality >= 6)"
+            )
+        else:
+            st.warning(
+                "Predicted Class: Lower Quality (Quality < 6)"
             )
 
-        with result2:
-            if classification_prediction == 1:
-                st.success("Classification: Quality >= 6")
-            else:
-                st.warning("Classification: Quality < 6")
+        st.caption(
+            "The classification model independently predicts "
+            "whether wine belongs to the lower-quality or "
+            "good-quality category."
+        )
+
+        # ------------------------------------------
+        # C. Classification probability
+        # ------------------------------------------
 
         if hasattr(classifier, "predict_proba"):
+
             probabilities = classifier.predict_proba(
                 input_data
             )[0]
 
-            positive_class_index = list(
-                classifier.classes_
-            ).index(1)
+            classes = list(classifier.classes_)
 
-            st.write(
-                "Probability of quality >= 6:",
-                f"{probabilities[positive_class_index] * 100:.2f}%"
-            )
+            if 1 in classes:
+                positive_class_index = classes.index(1)
+
+                positive_probability = (
+                    probabilities[positive_class_index] * 100
+                )
+
+                st.metric(
+                    "Probability of Good Quality",
+                    f"{positive_probability:.2f}%"
+                )
+
+        # ------------------------------------------
+        # D. Explanation
+        # ------------------------------------------
+
+        st.divider()
+
+        st.info(
+            "Why can the predictions differ? "
+            "Regression and classification use separate "
+            "trained models with different learning objectives. "
+            "Therefore, their predictions may occasionally "
+            "disagree. This is expected."
+        )
 
         st.caption(
             "These are model predictions, not laboratory "
