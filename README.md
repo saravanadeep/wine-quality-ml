@@ -13,6 +13,24 @@ The application provides two independent Machine Learning predictions:
 
 Built using Python, Scikit-learn and Streamlit.
 
+
+## 📸 Application Screenshots
+
+### 1. Application Home Page
+
+This interface allows users to enter wine characteristics
+and select the wine type.
+
+![Wine Quality Application](screenshots/app_home.png)
+
+### 2. Prediction Results
+
+The application displays independent classification
+and regression predictions, including classification probability.
+
+![Prediction Results](screenshots/prediction_results.png)
+
+
 ## Project Overview
 
 This project uses supervised machine learning techniques to predict wine quality based on its physicochemical properties.
