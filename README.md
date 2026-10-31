@@ -1,5 +1,18 @@
 # 🍷 Wine Quality Prediction Using Machine Learning
 
+## 🚀 Live Demo
+
+Try the deployed Wine Quality Prediction application:
+
+**[🍷 Launch Wine Quality Prediction App](https://wine-quality-ml-haha93kritn8rqs5kdv639.streamlit.app/)**
+
+The application provides two independent Machine Learning predictions:
+
+- **Classification:** Predicts whether wine quality is below 6 or at least 6.
+- **Regression:** Predicts a continuous wine quality score.
+
+Built using Python, Scikit-learn and Streamlit.
+
 ## Project Overview
 
 This project uses supervised machine learning techniques to predict wine quality based on its physicochemical properties.
